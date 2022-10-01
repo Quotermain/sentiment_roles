@@ -1,0 +1,30 @@
+---
+- name: Install git, python and other dependencies
+  ansible.builtin.apt:
+    name:
+      - git
+      - python3-pip
+      - python3-dev
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - python3-setuptools
+    state: present
+    update_cache: yes
+
+- name: Install wheel, gunicorn and flask
+  ansible.builtin.pip:
+    name:
+      - wheel
+      - gunicorn
+      - flask
+
+- name: Clone the repo with the app_level_balancer
+  ansible.builtin.git:
+    repo: https://github.com/Quotermain/youtube_comments_retriever
+    dest: /home/ubuntu/app_level_balancer
+
+- name: Start gunicorn
+  gunicorn:
+    app: 'wsgi:app'
+    chdir: '/home/ubuntu/app_level_balancer'

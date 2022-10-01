@@ -1,0 +1,15 @@
+---
+- name: Install nginx with apt
+  ansible.builtin.apt:
+    name:
+      - nginx
+    state: present
+    update_cache: yes
+
+- name: Upload nginx config
+  copy:
+    src: "default"
+    dest: "/etc/nginx/sites-available/default"
+    mode: 0755
+  register: nginx_config_uploaded
+  until: nginx_config_uploaded is succeeded
