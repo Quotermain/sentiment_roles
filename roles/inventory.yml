@@ -3,13 +3,17 @@ ansible_user=ubuntu
 ansible_connection=ssh
 
 [private_net:vars]
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@quoterback.ru"'
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@51.250.94.177"'
 
 [private_net:children]
 app_level_balancer
+sentiment_estimators
 
 [proxy_nginx]
 quoterback.ru
 
 [app_level_balancer]
 192.168.10.20
+
+[sentiment_estimators]
+192.168.10.21

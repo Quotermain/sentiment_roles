@@ -1,0 +1,44 @@
+---
+- name: Install git, python and other dependencies
+  ansible.builtin.apt:
+    name:
+      - git
+      - python3-pip
+      - python3-dev
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - python3-setuptools
+    state: present
+    update_cache: yes
+
+- name: Install wheel, gunicorn and flask
+  ansible.builtin.pip:
+    name:
+      - wheel
+      - gunicorn
+      - flask
+
+- name: Install pytorch with dependencies
+  ansible.builtin.pip:
+    name:
+      - torch
+      - torchvision
+      - torchaudio
+    extra_args: "--extra-index-url https://download.pytorch.org/whl/cpu"
+
+- name: Install transformers
+  ansible.builtin.pip:
+    name:
+      - transformers
+
+- name: Clone the repo with the app_level_balancer
+  ansible.builtin.git:
+    repo: https://github.com/Quotermain/sentiment_analysis_backend_server
+    dest: /home/ubuntu/sentiment_analysis_backend_server
+
+- name: Start gunicorn
+  gunicorn:
+    app: 'wsgi:app'
+    chdir: '/home/ubuntu/sentiment_analysis_backend_server'
+  async: 10
