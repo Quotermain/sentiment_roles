@@ -4,12 +4,12 @@
 #    - nginx_role
 #    - letsencrypt_role
 #   become: true
-#
+
 # - hosts: app_level_balancer
 #   roles:
 #     - app_level_balancer_role
 #   become: true
-#
+
 - hosts: sentiment_estimators
   roles:
     - sentiment_analysis_model_role
