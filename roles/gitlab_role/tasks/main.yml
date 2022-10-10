@@ -1,6 +1,47 @@
 ---
-- name: Set environment for docker
-#  become: yes
-  template:
-    src: templates/docker.sh
-    dest: /etc/profile.d/docker.sh
+# - name: Set environment for docker
+#   template:
+#     src: templates/docker.sh
+#     dest: /etc/profile.d/docker.sh
+#
+# - name: Install required system packages
+#   ansible.builtin.apt:
+#     name:
+#       - apt-transport-https
+#       - ca-certificates
+#       - curl
+#       - software-properties-common
+#       - python3-pip
+#       - virtualenv
+#       - python3-setuptools
+#     state: present
+#     update_cache: yes
+#
+# - name: Add Docker GPG apt Key
+#   apt_key:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     state: present
+#
+# - name: Add Docker Repository
+#   apt_repository:
+#     repo: deb https://download.docker.com/linux/ubuntu focal stable
+#     state: present
+#
+# - name: Update apt and install docker-ce
+#   apt:
+#     name: docker-ce
+#     state: latest
+#     update_cache: true
+
+- name: Install GitLab using Docker Engine
+  shell: >
+    sudo docker run --detach
+    --hostname gitlab.quoterback.ru
+    --publish 443:443 --publish 80:80 --publish 23:23
+    --name gitlab
+    --restart always
+    --volume $GITLAB_HOME/config:/etc/gitlab
+    --volume $GITLAB_HOME/logs:/var/log/gitlab
+    --volume $GITLAB_HOME/data:/var/opt/gitlab
+    --shm-size 256m
+    gitlab/gitlab-ee:latest
