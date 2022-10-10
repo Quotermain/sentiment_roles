@@ -4,13 +4,23 @@
 #    - nginx_role
 #    - letsencrypt_role
 #   become: true
-
+#
 # - hosts: app_level_balancer
 #   roles:
 #     - app_level_balancer_role
 #   become: true
-
-- hosts: sentiment_estimators
+#
+# - hosts: sentiment_estimators
+#   roles:
+#     - sentiment_analysis_model_role
+#   become: true
+#
+- hosts: gitlab
   roles:
-    - sentiment_analysis_model_role
+    - gitlab_role
   become: true
+#
+# - hosts: gitlab_runner
+#   roles:
+#     - gitlab_runner_role
+#   become: true

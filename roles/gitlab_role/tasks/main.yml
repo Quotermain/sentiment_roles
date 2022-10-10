@@ -1,0 +1,35 @@
+- name: Install dependencies with apt
+  ansible.builtin.apt:
+    name:
+      - curl
+      - openssh-server
+      - ca-certificates
+      - tzdata
+      - perl
+      - postfix
+      - debian-archive-keyring
+      - lsb-release
+      - apt-transport-https
+      - software-properties-common
+    state: present
+    update_cache: yes
+
+- name: Run gitlab preinstall script
+  shell: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+
+- name: Install gitlab-ce with apt
+  ansible.builtin.apt:
+    name:
+      - gitlab-ce
+    state: present
+
+- name: Upload gitlab config
+  copy:
+    src: "gitlab.rb"
+    dest: "/etc/gitlab/gitlab.rb"
+    mode: 0755
+  register: gitlab_config_uploaded
+  until: gitlab_config_uploaded is succeeded
+
+- name: Reconfigure gitlab
+  shell: gitlab-ctl reconfigure
