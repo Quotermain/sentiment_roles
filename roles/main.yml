@@ -6,12 +6,14 @@
     # - letsencrypt_role
   become: true
 
-# - hosts: app_level_balancer
-#   roles:
-#     - app_level_balancer_role
-#   become: true
-#
-# - hosts: sentiment_estimators
-#   roles:
-#     - sentiment_analysis_model_role
-#   become: true
+- hosts: app_level_balancer
+  roles:
+    - jenkins_role
+    # - app_level_balancer_role
+  become: true
+
+- hosts: sentiment_estimators
+  roles:
+    - jenkins_role
+    # - sentiment_analysis_model_role
+  become: true
