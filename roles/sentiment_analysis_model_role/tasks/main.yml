@@ -37,12 +37,6 @@
     repo: https://github.com/Quotermain/sentiment_analysis_backend_server
     dest: /home/ubuntu/sentiment_analysis_backend_server
 
-# - name: Start gunicorn
-#   gunicorn:
-#     app: 'wsgi:app'
-#     chdir: '/home/ubuntu/sentiment_analysis_backend_server'
-#   async: 30
-
 - name: Start gunicorn
   shell: |
     cd sentiment_analysis_backend_server && gunicorn --bind 0.0.0.0:5000 wsgi:app &

@@ -1,8 +1,0 @@
-- name: Run gitlab runner preinstall script
-  shell: curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
-
-- name: Install gitlab-runner with apt
-  ansible.builtin.apt:
-    name:
-      - gitlab-runner
-    state: present
