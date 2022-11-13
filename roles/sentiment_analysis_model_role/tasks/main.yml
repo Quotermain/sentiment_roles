@@ -32,11 +32,11 @@
     name:
       - transformers
 
-# - name: Clone the repo with the app_level_balancer
-#   ansible.builtin.git:
-#     repo: https://github.com/Quotermain/sentiment_analysis_backend_server
-#     dest: /home/ubuntu/sentiment_analysis_backend_server
-#
-# - name: Start gunicorn
-#   shell: |
-#     cd sentiment_analysis_backend_server && gunicorn --bind 0.0.0.0:5000 wsgi:app &
+- name: Clone the repo with the app_level_balancer
+  ansible.builtin.git:
+    repo: https://github.com/Quotermain/sentiment_analysis_backend_server
+    dest: /home/ubuntu/sentiment_analysis_backend_server
+
+- name: Start gunicorn
+  shell: |
+    cd sentiment_analysis_backend_server && gunicorn --bind 0.0.0.0:5000 --access-logfile /home/ubuntu/sentiment_analysis_backend_server/access.log --error-logfile /home/ubuntu/sentiment_analysis_backend_server/error.log wsgi:app --daemon

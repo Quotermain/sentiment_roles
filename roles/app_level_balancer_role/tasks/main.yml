@@ -19,11 +19,11 @@
       - gunicorn
       - flask
 
-# - name: Clone the repo with the app_level_balancer
-#   ansible.builtin.git:
-#     repo: https://github.com/Quotermain/youtube_comments_retriever
-#     dest: /home/ubuntu/app_level_balancer
-#
-# - name: Start gunicorn
-#   shell: |
-#     cd app_level_balancer && gunicorn --bind 0.0.0.0:5000 wsgi:app &
+- name: Clone the repo with the app_level_balancer
+  ansible.builtin.git:
+    repo: https://github.com/Quotermain/app_level_balancer
+    dest: /home/ubuntu/app_level_balancer
+
+- name: Start gunicorn
+  shell: |
+    cd app_level_balancer && gunicorn --bind 0.0.0.0:5000 --access-logfile /home/ubuntu/app_level_balancer/access.log --error-logfile /home/ubuntu/app_level_balancer/error.log wsgi:app --daemon
