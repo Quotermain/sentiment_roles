@@ -35,8 +35,8 @@ server {
         ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers         HIGH:!aNULL:!MD5;
 
-        server_name gitlab.quoterback.ru;
+        server_name elasticsearch.quoterback.ru;
         location / {
-                proxy_pass http://192.168.10.22;
+                proxy_pass https://192.168.10.30:9200;
         }
 }

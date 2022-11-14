@@ -8,8 +8,7 @@ ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@quoterback.ru"'
 [private_net:children]
 app_level_balancer
 sentiment_estimators
-gitlab
-gitlab_runner
+elasticsearch
 
 [proxy_nginx]
 quoterback.ru
@@ -20,8 +19,5 @@ quoterback.ru
 [sentiment_estimators]
 192.168.10.21
 
-[gitlab]
-192.168.10.22
-
-[gitlab_runner]
-192.168.10.23
+[elasticsearch]
+192.168.10.30
