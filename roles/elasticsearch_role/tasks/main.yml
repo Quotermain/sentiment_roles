@@ -6,10 +6,5 @@
   register: file_uploaded
   until: file_uploaded is succeeded
 
-- name: Create directrory for Elasticsearch
-  file:
-    state: directory
-    path: "elasticsearch-8.4.3"
-
 - name: Extract Elasticsearch in the installation directory
   shell: tar -xzf elasticsearch-8.4.3-linux-x86_64.tar.gz

@@ -40,3 +40,20 @@ server {
                 proxy_pass https://192.168.10.30:9200;
         }
 }
+
+server {
+        listen 443 ssl;
+
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        ssl_certificate     /etc/letsencrypt/certs/quoterback.ru.crt;
+        ssl_certificate_key /etc/letsencrypt/keys/quoterback.ru.key;
+        ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
+
+        server_name kibana.quoterback.ru;
+        location / {
+                proxy_pass http://192.168.10.31:5601;
+        }
+}

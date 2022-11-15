@@ -9,6 +9,7 @@ ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@quoterback.ru"'
 app_level_balancer
 sentiment_estimators
 elasticsearch
+kibana
 
 [proxy_nginx]
 quoterback.ru
@@ -21,3 +22,6 @@ quoterback.ru
 
 [elasticsearch]
 192.168.10.30
+
+[kibana]
+192.168.10.31

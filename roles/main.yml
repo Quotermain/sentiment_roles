@@ -21,3 +21,7 @@
 - hosts: elasticsearch
   roles:
     - elasticsearch_role
+
+- hosts: kibana
+  roles:
+    - kibana_role
