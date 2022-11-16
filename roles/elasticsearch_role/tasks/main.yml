@@ -1,4 +1,4 @@
-- name: Copy tar archive with elasticsearch
+- name: Copy tar archive with Elasticsearch
   copy:
     src: "elasticsearch-8.4.3-linux-x86_64.tar.gz"
     dest: "/home/ubuntu/elasticsearch-8.4.3-linux-x86_64.tar.gz"
@@ -8,3 +8,17 @@
 
 - name: Extract Elasticsearch in the installation directory
   shell: tar -xzf elasticsearch-8.4.3-linux-x86_64.tar.gz
+
+- name: set vm.max_map_count to 262144 in sysctl
+  become: true
+  sysctl: name={{ item.key }} value={{ item.value }}
+  with_items:
+    - { key: "vm.max_map_count", value: "262144" }
+
+- name: Copy Elasticsearch config file
+  copy:
+    src: "elasticsearch.yml"
+    dest: "/home/ubuntu/elasticsearch-8.4.3/config/elasticsearch.yml"
+    mode: 0766
+  register: file_uploaded
+  until: file_uploaded is succeeded

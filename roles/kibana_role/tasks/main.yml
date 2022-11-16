@@ -5,11 +5,14 @@
     mode: 0700
   register: file_uploaded
   until: file_uploaded is succeeded
-#
-# - name: Create directrory for Kibana
-#   file:
-#     state: directory
-#     path: "elasticsearch-8.4.3"
 
 - name: Extract Kibana in the installation directory
   shell: tar -xzf kibana-8.4.3-linux-x86_64.tar.gz
+
+- name: Copy config file
+  copy:
+    src: "kibana.yml"
+    dest: "/home/ubuntu/kibana-8.4.3/config/kibana.yml"
+    mode: 0766
+  register: file_uploaded
+  until: file_uploaded is succeeded
