@@ -54,6 +54,6 @@ server {
 
         server_name kibana.quoterback.ru;
         location / {
-                proxy_pass http://192.168.10.31:5601;
+                proxy_pass http://192.168.10.30:5601;
         }
 }

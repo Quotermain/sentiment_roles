@@ -18,10 +18,8 @@
     - sentiment_analysis_model_role
   become: true
 
-- hosts: elasticsearch
+- hosts: elk
   roles:
     - elasticsearch_role
-
-- hosts: kibana
-  roles:
     - kibana_role
+    - logstash_role

@@ -1,0 +1,10 @@
+- name: Copy tar archive with Logstash
+  copy:
+    src: "logstash-8.4.3-linux-x86_64.tar.gz"
+    dest: "/home/ubuntu/logstash-8.4.3-linux-x86_64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Logstash in the installation directory
+  shell: tar -xzf logstash-8.4.3-linux-x86_64.tar.gz
