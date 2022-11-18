@@ -1,40 +1,58 @@
-# - name: Copy tar archive with Elasticsearch
-#   copy:
-#     src: "elasticsearch-8.4.3-linux-x86_64.tar.gz"
-#     dest: "/home/ubuntu/elasticsearch-8.4.3-linux-x86_64.tar.gz"
-#     mode: 0700
-#   register: file_uploaded
-#   until: file_uploaded is succeeded
-#
-# - name: Extract Elasticsearch in the installation directory
-#   shell: tar -xzf elasticsearch-8.4.3-linux-x86_64.tar.gz
-#
-# - name: set vm.max_map_count to 262144 in sysctl
-#   become: true
-#   sysctl: name={{ item.key }} value={{ item.value }}
-#   with_items:
-#     - { key: "vm.max_map_count", value: "262144" }
-#
-# - name: Copy Elasticsearch config file
-#   copy:
-#     src: "elasticsearch.yml"
-#     dest: "/home/ubuntu/elasticsearch-8.4.3/config/elasticsearch.yml"
-#     mode: 0766
-#   register: file_uploaded
-#   until: file_uploaded is succeeded
+- name: Copy tar archive with Elasticsearch
+  copy:
+    src: "elasticsearch-8.4.3-linux-x86_64.tar.gz"
+    dest: "/home/ubuntu/elasticsearch-8.4.3-linux-x86_64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Elasticsearch in the installation directory
+  shell: tar -xzf elasticsearch-8.4.3-linux-x86_64.tar.gz
+
+- name: set vm.max_map_count to 262144 in sysctl
+  become: true
+  sysctl: name={{ item.key }} value={{ item.value }}
+  with_items:
+    - { key: "vm.max_map_count", value: "262144" }
+
+- name: Copy Elasticsearch config file
+  copy:
+    src: "elasticsearch.yml"
+    dest: "/home/ubuntu/elasticsearch-8.4.3/config/elasticsearch.yml"
+    mode: 0766
+  register: file_uploaded
+  until: file_uploaded is succeeded
 
 - name: Start Elasticsearch as daemon
   shell: "cd elasticsearch-8.4.3 && ./bin/elasticsearch &"
   async: 10
 
-- name: Change elastic password
-  ansible.builtin.uri:
-    url: https://192.168.10.30:9200/_security/user/elastic/_password?pretty
-    method: POST
-    body_format: json
-    body: "{ \"password\":\"new_test_test\" }"
-    status_code: 200
-    user: elastic
-    password: new-test-test
-    force_basic_auth: yes
-    ca_path: /home/ubuntu/elasticsearch-8.4.3/config/certs/http_ca.crt
+- name: Install python for interactive changing elastic password
+  become: true
+  ansible.builtin.apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+    update_cache: yes
+
+- name: Install pexpect for interactive answers
+  become: true
+  ansible.builtin.pip:
+    name: pexpect
+
+- name: Change elastic user password
+  ansible.builtin.expect:
+    command: /home/ubuntu//elasticsearch-8.4.3//bin/elasticsearch-reset-password -u elastic -i
+    responses:
+      confirm: "y"
+      Enter: "test_elastic_password"
+      Re-enter: "test_elastic_password"
+
+- name: Change kibana user password
+  ansible.builtin.expect:
+    command: /home/ubuntu//elasticsearch-8.4.3//bin/elasticsearch-reset-password -u kibana_system -i
+    responses:
+      confirm: "y"
+      Enter: "test_kibana_password"
+      Re-enter: "test_kibana_password"
