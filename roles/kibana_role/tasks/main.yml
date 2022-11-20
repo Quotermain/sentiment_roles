@@ -16,3 +16,19 @@
     mode: 0766
   register: file_uploaded
   until: file_uploaded is succeeded
+
+- name: Copy unit file to start kibana as daemon
+  become: true
+  copy:
+    src: "kibana.service"
+    dest: "/etc/systemd/system/kibana.service"
+    mode: 0644
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Daemon-reload to apply changes and start Kibana
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    name: kibana
