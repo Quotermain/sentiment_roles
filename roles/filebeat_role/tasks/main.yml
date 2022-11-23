@@ -1,0 +1,10 @@
+- name: Copy tar archive with Filebeat
+  copy:
+    src: "filebeat-8.4.3-linux-x86_64.tar.gz"
+    dest: "/home/ubuntu/filebeat-8.4.3-linux-x86_64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Filebeat in the installation directory
+  shell: tar -xzf filebeat-8.4.3-linux-x86_64.tar.gz
