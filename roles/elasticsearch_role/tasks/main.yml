@@ -56,3 +56,8 @@
       confirm: "y"
       Enter: "test_kibana_password"
       Re-enter: "test_kibana_password"
+
+- name: Extract ca_cert fingerprint
+  shell: |
+    cd elasticsearch-8.4.3 && openssl x509 -noout -fingerprint -sha256 -in config/certs/http_ca.crt | grep -Po '(?<=Fingerprint=)[^"]*' >> test
+  register: fingerprint
