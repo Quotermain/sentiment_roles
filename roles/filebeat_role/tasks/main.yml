@@ -8,3 +8,11 @@
 
 - name: Extract Filebeat in the installation directory
   shell: tar -xzf filebeat-8.4.3-linux-x86_64.tar.gz
+
+- name: Copy ca_cert to the Filebeat node
+  copy:
+    src: /tmp/http_ca.crt
+    dest: /home/ubuntu/filebeat-8.4.3-linux-x86_64/http_ca.crt
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
