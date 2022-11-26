@@ -13,6 +13,14 @@
   copy:
     src: /tmp/http_ca.crt
     dest: /home/ubuntu/filebeat-8.4.3-linux-x86_64/http_ca.crt
-    mode: 0700
+    mode: 0755
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Upload Filebeat config
+  copy:
+    src: filebeat.yml
+    dest: /home/ubuntu/filebeat-8.4.3-linux-x86_64/filebeat.yml
+    mode: 0755
   register: file_uploaded
   until: file_uploaded is succeeded
