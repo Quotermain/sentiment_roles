@@ -1,15 +1,15 @@
 ---
-- hosts: elk
-  roles:
-    - elasticsearch_role
-    - kibana_role
-    - logstash_role
+# - hosts: elk
+#   roles:
+#     - elasticsearch_role
+#     - kibana_role
+#     - logstash_role
 
 - hosts: proxy_nginx
   roles:
-    - jenkins_role
-    - nginx_role
-    - letsencrypt_role
+    # - jenkins_role
+    # - nginx_role
+    # - letsencrypt_role
     - filebeat_role
   become: true
 
@@ -17,10 +17,12 @@
   roles:
     - jenkins_role
     - app_level_balancer_role
+    - filebeat_role
   become: true
 
 - hosts: sentiment_estimators
   roles:
     - jenkins_role
     - sentiment_analysis_model_role
+    - filebeat_role
   become: true

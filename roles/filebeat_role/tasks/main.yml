@@ -19,7 +19,7 @@
 
 - name: Upload Filebeat config
   copy:
-    src: filebeat.yml
+    src: filebeat.{{ inventory_hostname }}.yml
     dest: /home/ubuntu/filebeat-8.4.3-linux-x86_64/filebeat.yml
     mode: 0755
   register: file_uploaded
