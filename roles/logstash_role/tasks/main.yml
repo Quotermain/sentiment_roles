@@ -8,3 +8,19 @@
 
 - name: Extract Logstash in the installation directory
   shell: tar -xzf logstash-8.4.3-linux-x86_64.tar.gz
+
+- name: Copy test config with pipeline
+  copy:
+    src: "first-pipeline.conf"
+    dest: "/home/ubuntu/logstash-8.4.3/first-pipeline.conf"
+    mode: 0777
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Copy config file
+  copy:
+    src: "logstash.yml"
+    dest: "/home/ubuntu/logstash-8.4.3/config/logstash.yml"
+    mode: 0777
+  register: file_uploaded
+  until: file_uploaded is succeeded
