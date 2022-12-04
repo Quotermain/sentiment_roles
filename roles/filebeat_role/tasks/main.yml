@@ -24,3 +24,19 @@
     mode: 0755
   register: file_uploaded
   until: file_uploaded is succeeded
+
+- name: Copy unit file to start Filebeat as daemon
+  become: true
+  copy:
+    src: "filebeat.service"
+    dest: "/etc/systemd/system/filebeat.service"
+    mode: 0644
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Daemon-reload to apply changes and start Filebeat
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    name: filebeat
