@@ -1,0 +1,26 @@
+- name: Copy tar archive with Node Exporter
+  copy:
+    src: "node_exporter-1.5.0.linux-amd64.tar.gz"
+    dest: "/home/ubuntu/node_exporter-1.5.0.linux-amd64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Node Exporter in the installation directory
+  shell: tar -xzf node_exporter-1.5.0.linux-amd64.tar.gz
+
+- name: Copy unit file to start Node Exporter as daemon
+  become: true
+  copy:
+    src: "node_exporter.service"
+    dest: "/etc/systemd/system/node_exporter.service"
+    mode: 0644
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Daemon-reload to apply changes and start Node Exporter
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    name: node_exporter
