@@ -1,0 +1,34 @@
+- name: Copy tar archive with Prometheus
+  copy:
+    src: "prometheus-2.40.6.linux-amd64.tar.gz"
+    dest: "/home/ubuntu/prometheus-2.40.6.linux-amd64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Prometheus in the installation directory
+  shell: tar -xzf prometheus-2.40.6.linux-amd64.tar.gz
+
+- name: Copy Prometheus config
+  copy:
+    src: "prometheus.yml"
+    dest: "/home/ubuntu/prometheus-2.40.6.linux-amd64/prometheus.yml"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Copy unit file to start Prometheus as daemon
+  become: true
+  copy:
+    src: "prometheus.service"
+    dest: "/etc/systemd/system/prometheus.service"
+    mode: 0644
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Daemon-reload to apply changes and start Prometheus
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    name: prometheus

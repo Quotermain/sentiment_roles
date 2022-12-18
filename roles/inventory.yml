@@ -9,6 +9,7 @@ ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@quoterback.ru"'
 app_level_balancer
 sentiment_estimators
 elk
+monitoring
 
 [proxy_nginx]
 quoterback.ru
@@ -21,3 +22,6 @@ quoterback.ru
 
 [elk]
 192.168.10.30
+
+[monitoring]
+192.168.10.40
