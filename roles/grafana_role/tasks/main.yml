@@ -1,0 +1,26 @@
+- name: Copy tar archive with Grafana
+  copy:
+    src: "grafana-enterprise-9.3.2.linux-amd64.tar.gz"
+    dest: "/home/ubuntu/grafana-enterprise-9.3.2.linux-amd64.tar.gz"
+    mode: 0700
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Extract Grafana in the installation directory
+  shell: tar -xzf grafana-enterprise-9.3.2.linux-amd64.tar.gz
+
+- name: Copy unit file to start Grafana as daemon
+  become: true
+  copy:
+    src: "grafana.service"
+    dest: "/etc/systemd/system/grafana.service"
+    mode: 0644
+  register: file_uploaded
+  until: file_uploaded is succeeded
+
+- name: Daemon-reload to apply changes and start Grafana
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: yes
+    name: grafana

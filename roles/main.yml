@@ -29,3 +29,4 @@
 - hosts: monitoring
   roles:
     - prometheus_role
+    - grafana_role
